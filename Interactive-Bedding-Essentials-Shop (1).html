@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dawn Collections - Premium Bedding Solutions</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#3b82f6',secondary:'#f59e0b'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Poppins', sans-serif;
+scroll-behavior: smooth;
+}
+.hero-slider {
+position: relative;
+height: 80vh;
+overflow: hidden;
+}
+.hero-slide {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+opacity: 0;
+transition: opacity 1s ease-in-out;
+}
+.hero-slide.active {
+opacity: 1;
+}
+.product-card:hover .quick-view {
+opacity: 1;
+transform: translateY(0);
+}
+.product-card:hover img {
+transform: scale(1.05);
+}
+.category-card:hover .category-overlay {
+opacity: 1;
+}
+.category-card:hover img {
+transform: scale(1.05);
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.cart-sidebar {
+transform: translateX(100%);
+transition: transform 0.3s ease-in-out;
+}
+.cart-sidebar.open {
+transform: translateX(0);
+}
+#cart-items {
+max-height: 24rem; /* Limit the height of the cart items */
+overflow-y: auto; /* Enable vertical scrolling */
+}
+.quick-view-modal {
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease;
+}
+.quick-view-modal.open {
+opacity: 1;
+visibility: visible;
+}
+.custom-checkbox {
+position: relative;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+position: absolute;
+top: 0;
+left: 0;
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 4px;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #3b82f6;
+border-color: #3b82f6;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 7px;
+top: 3px;
+width: 6px;
+height: 11px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 44px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.switch-slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 24px;
+}
+.switch-slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .switch-slider {
+background-color: #3b82f6;
+}
+input:checked + .switch-slider:before {
+transform: translateX(20px);
+}
+.toast {
+position: fixed;
+bottom: 20px;
+right: 20px;
+transform: translateY(100px);
+opacity: 0;
+transition: all 0.3s ease;
+}
+.toast.show {
+transform: translateY(0);
+opacity: 1;
+}
+</style>
+</head>
+<body class="bg-white">
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
+<div class="container mx-auto px-4 py-4 flex items-center justify-between">
+<div class="w-1/3 flex items-center">
+<div class="relative">
+<button class="flex items-center justify-center text-gray-700 hover:text-primary transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-menu-line ri-lg"></i>
+</div>
+</button>
+</div>
+</div>
+<div class="w-1/3 flex justify-center">
+<a href="#" class="font-['Pacifico'] text-3xl text-gray-800">logo</a>
+</div>
+<div class="w-1/3 flex justify-end items-center space-x-4">
+<div class="relative">
+<button class="flex items-center justify-center text-gray-700 hover:text-primary transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-search-line ri-lg"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center justify-center text-gray-700 hover:text-primary transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-user-line ri-lg"></i>
+</div>
+</button>
+</div>
+<div class="relative">
+<button id="cart-toggle" class="flex items-center justify-center text-gray-700 hover:text-primary transition-colors">
+<div class="w-10 h-10 flex items-center justify-center">
+<i class="ri-shopping-bag-line ri-lg"></i>
+<span id="cart-count" class="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+<nav class="container mx-auto px-4 py-3 border-t border-gray-100">
+<ul class="flex justify-center space-x-8">
+<li><a href="#" class="text-sm font-medium text-gray-800 hover:text-primary transition-colors pb-1 border-b-2 border-primary">Home</a></li>
+<li><a href="#shop-section" class="text-sm font-medium text-gray-800 hover:text-primary transition-colors pb-1 border-b-2 border-transparent">Shop</a></li>
+<li><a href="#collections-section" class="text-sm font-medium text-gray-800 hover:text-primary transition-colors pb-1 border-b-2 border-transparent">Collections</a></li>
+<li><a href="#about-section" class="text-sm font-medium text-gray-800 hover:text-primary transition-colors pb-1 border-b-2 border-transparent">About</a></li>
+<li><a href="#contact-section" class="text-sm font-medium text-gray-800 hover:text-primary transition-colors pb-1 border-b-2 border-transparent">Contact</a></li>
+</ul>
+</nav>
+</header>
+<!-- Hero Slider -->
+<div class="hero-slider mt-28">
+<div class="hero-slide active" style="background-image: url('https://public.readdy.ai/ai/img_res/6de588bf1afa5528b62d059d0886366c.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl text-black">
+<h1 class="text-5xl font-bold mb-4">Premium Bedding Solutions</h1>
+<p class="text-xl mb-8">Transform your sleep experience with our luxury bedding collection. Crafted for comfort and designed for elegance.</p>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://public.readdy.ai/ai/img_res/4af51b21bac86eafd61230890441336a.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl text-white">
+<h1 class="text-5xl font-bold mb-4">Luxury Comfort</h1>
+<p class="text-xl mb-8">Experience the perfect blend of luxury and comfort with our premium bedding collections.</p>
+<button class="bg-white text-gray-900 px-8 py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Explore Now</button>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://public.readdy.ai/ai/img_res/dc97343ebe4e204ec98010a2dc52a617.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl text-white">
+<h1 class="text-5xl font-bold mb-4">Sleep Protection</h1>
+<p class="text-xl mb-8">Our premium protective bedding solutions ensure a peaceful and healthy sleep environment.</p>
+<button class="bg-white text-gray-900 px-8 py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Discover More</button>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://public.readdy.ai/ai/img_res/0d0aee2d5dee671a5a7bb5c40501c99c.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl text-white">
+<h1 class="text-5xl font-bold mb-4">Elegant Design</h1>
+<p class="text-xl mb-8">Elevate your bedroom with our elegantly designed bedding collections that blend style and functionality.</p>
+<button class="bg-white text-gray-900 px-8 py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">View Collection</button>
+</div>
+</div>
+</div>
+<div class="hero-slide" style="background-image: url('https://public.readdy.ai/ai/img_res/a9397cdc496bb0c26f76ffbcf4b12d71.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<div class="container mx-auto px-4 h-full flex items-center">
+<div class="max-w-xl text-white">
+<h1 class="text-5xl font-bold mb-4">Premium Quality</h1>
+<p class="text-xl mb-8">Crafted from the finest materials, our bedding products offer unmatched quality and durability.</p>
+<button class="bg-white text-gray-900 px-8 py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Shop Premium</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Collection -->
+<section class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-2">Featured Collection</h2>
+<p class="text-gray-600">Discover our most popular premium bedding products</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+<div class="relative overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/d4527aacd5bad817efac2eb211787c46.jpg" alt="Premium Mattress Protector" class="w-full h-64 object-cover object-top transition-transform duration-300">
+<div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+<button data-product="1" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-gray-900 font-medium mb-1">Waterproof Mattress Protector</h3>
+<div class="flex justify-between items-center">
+<span class="text-gray-900 font-semibold">$49.99</span>
+<button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="1">
+<i class="ri-shopping-bag-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+<div class="relative overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/1cd23aaf2abda4dfd669a1cfee4baceb.jpg" alt="Pillow Protector Set" class="w-full h-64 object-cover object-top transition-transform duration-300">
+<div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+<button data-product="2" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-gray-900 font-medium mb-1">Premium Pillow Protector Set</h3>
+<div class="flex justify-between items-center">
+<span class="text-gray-900 font-semibold">$29.99</span>
+<button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="2">
+<i class="ri-shopping-bag-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+<div class="relative overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/6b48228e5fcc7c90c80694a78d96f6fc.jpg" alt="Mosquito Net" class="w-full h-64 object-cover object-top transition-transform duration-300">
+<div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+<button data-product="3" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-gray-900 font-medium mb-1">Luxury Mosquito Net</h3>
+<div class="flex justify-between items-center">
+<span class="text-gray-900 font-semibold">$39.99</span>
+<button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="3">
+<i class="ri-shopping-bag-line"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+<div class="relative overflow-hidden">
+<img src="https://public.readdy.ai/ai/img_res/9454397b095c92966589b820904cf44d.jpg" alt="Cotton Bedsheet Set" class="w-full h-64 object-cover object-top transition-transform duration-300">
+<div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+<button data-product="4" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-gray-900 font-medium mb-1">Egyptian Cotton Bedsheet Set</h3>
+<div class="flex justify-between items-center">
+<span class="text-gray-900 font-semibold">$79.99</span>
+<button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="4">
+<i class="ri-shopping-bag-line"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section id="collections-section" class="py-16">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-2">Shop By Category</h2>
+<p class="text-gray-600">Browse our premium bedding collections</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/63487900ac7efae1ddd82f3c2bdab87d.jpg" alt="Mattress Protectors" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Mattress Protectors</h3>
+</div>
+</div>
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/d1c64a10fb59feda0947047746e923a2.jpg" alt="Pillow Protectors" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Pillow Protectors</h3>
+</div>
+</div>
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/2e3f26487a1afc73c5417ac300663650.jpg" alt="Mosquito Nets" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Mosquito Nets</h3>
+</div>
+</div>
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/2531e9e8663e0da334bf54bced683d1d.jpg" alt="Bedsheets" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Bedsheets</h3>
+</div>
+</div>
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/21f1820c1410b44378be46e3563aa82a.jpg" alt="Duvets" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Duvets</h3>
+</div>
+</div>
+<div class="category-card relative overflow-hidden rounded shadow-sm h-80 group">
+<img src="https://public.readdy.ai/ai/img_res/0363eff05a979686a7721692b7324d26.jpg" alt="Accessories" class="w-full h-full object-cover object-top transition-transform duration-500">
+<div class="category-overlay absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+<h3 class="text-white text-2xl font-bold mb-4">Accessories</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Shop Section -->
+<section id="shop-section" class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Shop All Products</h2>
+      <p class="text-gray-600">Discover our complete collection of premium bedding solutions</p>
+    </div>
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Product 1 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/aaa246e62c7c5aef1d70cdb8b04eb796.jpg" alt="Waterproof Mattress Protector" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="1" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Waterproof Mattress Protector</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$49.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="1">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 2 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/1cd23aaf2abda4dfd669a1cfee4baceb.jpg" alt="Pillow Protector Set" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="2" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Premium Pillow Protector Set</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$29.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="2">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 3 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/6b48228e5fcc7c90c80694a78d96f6fc.jpg" alt="Luxury Mosquito Net" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="3" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Luxury Mosquito Net</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$39.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="3">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 4 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/9454397b095c92966589b820904cf44d.jpg" alt="Cotton Bedsheet Set" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="4" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Egyptian Cotton Bedsheet Set</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$79.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="4">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 5 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/2531e9e8663e0da334bf54bced683d1d.jpg" alt="Bedsheets" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="5" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Bedsheets</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$59.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="5">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 6 -->
+      <div class="product-card bg-white rounded shadow-sm overflow-hidden group">
+        <div class="relative overflow-hidden">
+          <img src="https://public.readdy.ai/ai/img_res/21f1820c1410b44378be46e3563aa82a.jpg" alt="Duvets" class="w-full h-64 object-cover object-top transition-transform duration-300">
+          <div class="quick-view absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 transform translate-y-4 transition-all duration-300">
+            <button data-product="6" class="quick-view-btn bg-white text-gray-900 px-4 py-2 !rounded-button text-sm font-medium hover:bg-gray-100 transition-colors whitespace-nowrap">Quick View</button>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="text-gray-900 font-medium mb-1">Duvets</h3>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-900 font-semibold">$89.99</span>
+            <button class="add-to-cart-btn w-10 h-10 flex items-center justify-center bg-gray-100 !rounded-button hover:bg-primary hover:text-white transition-colors" data-id="6">
+              <i class="ri-shopping-bag-line"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Features Section -->
+<section id="about-section" class="py-16">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 mb-2">About Our Products</h2>
+<p class="text-gray-600">Why choose Dawn Collections for your bedding needs</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="text-center">
+<div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full">
+<i class="ri-truck-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-lg font-semibold mb-2">Free Shipping</h3>
+<p class="text-gray-600 text-sm">Free shipping on all orders over $50</p>
+</div>
+<div class="text-center">
+<div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full">
+<i class="ri-shield-check-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-lg font-semibold mb-2">Quality Guarantee</h3>
+<p class="text-gray-600 text-sm">Premium materials and craftsmanship</p>
+</div>
+<div class="text-center">
+<div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full">
+<i class="ri-refresh-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-lg font-semibold mb-2">30-Day Returns</h3>
+<p class="text-gray-600 text-sm">Easy returns within 30 days</p>
+</div>
+<div class="text-center">
+<div class="w-16 h-16 flex items-center justify-center mx-auto mb-4 bg-primary bg-opacity-10 rounded-full">
+<i class="ri-customer-service-2-line ri-xl text-primary"></i>
+</div>
+<h3 class="text-lg font-semibold mb-2">24/7 Support</h3>
+<p class="text-gray-600 text-sm">Customer support available anytime</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section id="contact-section" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="max-w-2xl mx-auto text-center">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Subscribe to Our Newsletter</h2>
+<p class="text-gray-600 mb-8">Stay updated with our latest products, exclusive offers, and bedding tips.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<input type="email" placeholder="Enter your email address" class="flex-grow px-4 py-3 border-none !rounded-button shadow-sm focus:outline-none focus:ring-2 focus:ring-primary">
+<button class="bg-primary text-white px-6 py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Subscribe</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white pt-16 pb-8 border-t border-gray-100">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+<div class="lg:col-span-2">
+<a href="#" class="font-['Pacifico'] text-3xl text-gray-800 mb-4 inline-block">logo</a>
+<p class="text-gray-600 mb-6">Premium bedding solutions for a better night's sleep. Quality products that protect and enhance your bedding experience.</p>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors">
+<i class="ri-instagram-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors">
+<i class="ri-twitter-x-line"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors">
+<i class="ri-pinterest-line"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Shop</h3>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Mattress Protectors</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Pillow Protectors</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Mosquito Nets</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Bedsheets</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Duvets</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Company</h3>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">About Us</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Contact</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Blog</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Careers</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Press</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Support</h3>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">FAQs</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Shipping & Returns</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Warranty</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Track Order</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary transition-colors">Privacy Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-gray-100">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-600 text-sm mb-4 md:mb-0">&copy; 2025 Dawn Collections. All rights reserved.</p>
+<div class="flex items-center space-x-4">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-visa-fill ri-lg text-gray-600"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-mastercard-fill ri-lg text-gray-600"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-paypal-fill ri-lg text-gray-600"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-apple-fill ri-lg text-gray-600"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Back to Top Button -->
+<button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all">
+<i class="ri-arrow-up-line ri-lg"></i>
+</button>
+<!-- Cart Sidebar -->
+<div id="cart-sidebar" class="cart-sidebar fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-xl z-50 overflow-y-auto">
+  <div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold">Your Cart (<span id="cart-count">3</span>)</h2>
+      <button id="close-cart" class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900">
+        <i class="ri-close-line ri-lg"></i>
+      </button>
+    </div>
+    <!-- Scrollable Cart Items -->
+    <div id="cart-items" class="space-y-6 max-h-96 overflow-y-auto">
+      <!-- Cart items will be dynamically rendered here -->
+    </div>
+    <!-- Cart Summary -->
+    <div class="mt-8 pt-6 border-t border-gray-100">
+      <div class="flex justify-between mb-2">
+        <span class="text-gray-600">Subtotal</span>
+        <span id="cart-subtotal" class="font-semibold">$0.00</span>
+      </div>
+      <div class="flex justify-between mb-2">
+        <span class="text-gray-600">Tax</span>
+        <span id="cart-tax" class="font-semibold">$0.00</span>
+      </div>
+      <div class="flex justify-between mb-6 text-lg font-bold">
+        <span>Total</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <button class="w-full bg-primary text-white py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all mb-3 whitespace-nowrap">Checkout</button>
+      <button id="continue-shopping" class="w-full bg-white text-gray-900 py-3 border border-gray-200 font-medium !rounded-button hover:bg-gray-50 transition-all whitespace-nowrap">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+<!-- Quick View Modal -->
+<div id="quick-view-modal" class="quick-view-modal fixed inset-0 z-50 flex items-center justify-center">
+<div class="absolute inset-0 bg-black bg-opacity-50"></div>
+<div class="relative bg-white w-full max-w-4xl rounded shadow-lg mx-4">
+<button id="close-quick-view" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900 z-10">
+<i class="ri-close-line ri-lg"></i>
+</button>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+<div class="relative">
+<img id="quick-view-image" src="https://public.readdy.ai/ai/img_res/e0310e08b98d6a1ec9cf937027f9a00e.jpg" alt="Product" class="w-full h-auto object-cover object-top rounded">
+</div>
+<div>
+<h2 id="quick-view-title" class="text-2xl font-bold mb-2">Waterproof Mattress Protector</h2>
+<div class="flex items-center mb-4">
+<div class="flex text-yellow-400">
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-fill"></i>
+<i class="ri-star-half-fill"></i>
+</div>
+<span class="text-gray-500 text-sm ml-2">4.5 (128 reviews)</span>
+</div>
+<p id="quick-view-price" class="text-2xl font-bold text-gray-900 mb-4">$49.99</p>
+<p id="quick-view-description" class="text-gray-600 mb-6">Our premium waterproof mattress protector offers complete protection against spills, stains, and allergens while remaining breathable and comfortable. Made with high-quality materials, it's designed to extend the life of your mattress without compromising on comfort.</p>
+<div class="mb-6">
+<h3 class="font-medium mb-2">Size</h3>
+<div class="flex flex-wrap gap-2">
+<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">Single</button>
+<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">Double</button>
+<button class="size-btn px-4 py-2 border border-primary !rounded-button text-sm text-primary transition-colors whitespace-nowrap">Queen</button>
+<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">King</button>
+</div>
+</div>
+<div class="flex items-center space-x-4 mb-6">
+<div class="flex items-center border border-gray-200 rounded">
+<button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900">-</button>
+<input type="number" value="1" min="1" class="w-14 h-10 text-center border-none">
+<button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900">+</button>
+</div>
+<button class="flex-grow bg-primary text-white py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Add to Cart</button>
+</div>
+<div class="flex items-center space-x-6 text-gray-500">
+<button class="flex items-center hover:text-primary transition-colors">
+<i class="ri-heart-line mr-2"></i>
+<span>Add to Wishlist</span>
+</button>
+<button class="flex items-center hover:text-primary transition-colors">
+<i class="ri-share-line mr-2"></i>
+<span>Share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Toast Notification -->
+<div id="toast" class="toast bg-white shadow-lg rounded p-4 max-w-xs z-50">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mr-3">
+<i class="ri-check-line ri-lg text-primary"></i>
+</div>
+<div>
+<h3 class="font-medium text-gray-900">Added to Cart!</h3>
+<p class="text-gray-600 text-sm">Item successfully added to your cart.</p>
+</div>
+<button class="ml-2 text-gray-400 hover:text-gray-600" onclick="document.getElementById('toast').classList.remove('show')">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="mt-2 pt-2 border-t border-gray-100 flex justify-end">
+<button class="text-primary text-sm font-medium hover:underline" onclick="document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('toast').classList.remove('show');">
+View Cart
+</button>
+</div>
+</div>
+<script>
+// Cart state
+let cart = [
+  { id: 1, name: 'Waterproof Mattress Protector', price: 49.99, quantity: 1, image: 'https://public.readdy.ai/ai/img_res/aaa246e62c7c5aef1d70cdb8b04eb796.jpg' },
+  { id: 2, name: 'Premium Pillow Protector Set', price: 29.99, quantity: 2, image: 'https://public.readdy.ai/ai/img_res/1cd23aaf2abda4dfd669a1cfee4baceb.jpg' },
+  { id: 3, name: 'Egyptian Cotton Bedsheet Set', price: 79.99, quantity: 1, image: 'https://public.readdy.ai/ai/img_res/9454397b095c92966589b820904cf44d.jpg' },
+];
+
+// Function to format price
+function formatPrice(price) {
+  return `$${price.toFixed(2)}`;
+}
+
+// Function to calculate and update cart totals
+function updateCartTotals() {
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const taxRate = 0.08; // Example tax rate: 8%
+  const tax = subtotal * taxRate;
+  const total = subtotal + tax;
+
+  // Update the DOM
+  document.querySelector('#cart-subtotal').textContent = formatPrice(subtotal);
+  document.querySelector('#cart-tax').textContent = formatPrice(tax);
+  document.querySelector('#cart-total').textContent = formatPrice(total);
+  document.querySelector('#cart-count').textContent = cart.reduce((count, item) => count + item.quantity, 0);
+}
+
+// Function to render the cart items
+function renderCartItems() {
+  const cartContainer = document.querySelector('#cart-items');
+  cartContainer.innerHTML = '';
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = `
+      <div class="text-center py-8">
+        <p class="text-gray-500">Your cart is empty.</p>
+      </div>
+    `;
+    updateCartTotals();
+    return;
+  }
+
+  cart.forEach((item) => {
+    const cartItem = document.createElement('div');
+    cartItem.className = 'flex items-center justify-between py-4 border-b';
+    cartItem.innerHTML = `
+      <div class="flex items-center space-x-4">
+        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+        <div>
+          <h3 class="text-sm font-medium">${item.name}</h3>
+          <p class="text-xs text-gray-500">Price: ${formatPrice(item.price)}</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button class="quantity-decrease px-2 py-1 bg-gray-200 rounded text-xs" data-id="${item.id}">-</button>
+        <span class="text-sm">${item.quantity}</span>
+        <button class="quantity-increase px-2 py-1 bg-gray-200 rounded text-xs" data-id="${item.id}">+</button>
+        <button class="remove-item px-2 py-1 bg-red-500 text-white rounded text-xs" data-id="${item.id}">x</button>
+      </div>
+    `;
+    cartContainer.appendChild(cartItem);
+  });
+
+  updateCartTotals();
+  attachCartEventListeners();
+}
+
+// Function to add a product to the cart
+function addToCart(product) {
+  const existingItem = cart.find((item) => item.id === product.id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  renderCartItems();
+}
+
+// Function to remove a product from the cart
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  renderCartItems();
+}
+
+// Function to update the quantity of a product in the cart
+function updateCartQuantity(productId, change) {
+  const item = cart.find((item) => item.id === productId);
+
+  if (item) {
+    item.quantity += change;
+
+    if (item.quantity <= 0) {
+      removeFromCart(productId);
+    } else {
+      renderCartItems();
+    }
+  }
+}
+
+// Attach event listeners to cart buttons
+function attachCartEventListeners() {
+  document.querySelectorAll('.quantity-increase').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = parseInt(button.getAttribute('data-id'));
+      updateCartQuantity(productId, 1);
+    });
+  });
+
+  document.querySelectorAll('.quantity-decrease').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = parseInt(button.getAttribute('data-id'));
+      updateCartQuantity(productId, -1);
+    });
+  });
+
+  document.querySelectorAll('.remove-item').forEach((button) => {
+    button.addEventListener('click', () => {
+      const productId = parseInt(button.getAttribute('data-id'));
+      removeFromCart(productId);
+    });
+  });
+}
+
+// Quick View Modal
+const quickViewBtns = document.querySelectorAll('.quick-view-btn');
+const quickViewModal = document.getElementById('quick-view-modal');
+const closeQuickView = document.getElementById('close-quick-view');
+
+// Open Quick View Modal
+quickViewBtns.forEach((btn) => {
+  btn.addEventListener('click', function () {
+    const productId = this.getAttribute('data-product');
+    const product = cart.find((item) => item.id == productId);
+
+    if (product) {
+      document.getElementById('quick-view-image').src = product.image;
+      document.getElementById('quick-view-title').textContent = product.name;
+      document.getElementById('quick-view-price').textContent = `$${product.price.toFixed(2)}`;
+      document.getElementById('quick-view-description').textContent = `Description for ${product.name}`;
+
+      // Add event listeners for Quick View quantity buttons
+      const quickViewQuantityBtns = quickViewModal.querySelectorAll('.quantity-btn');
+      quickViewQuantityBtns[0].onclick = () => updateCartQuantity(product.id, -1); // Decrease
+      quickViewQuantityBtns[1].onclick = () => updateCartQuantity(product.id, 1); // Increase
+    }
+
+    quickViewModal.classList.add('open');
+    document.body.style.overflow = 'hidden'; // Disable scrolling
+  });
+});
+
+// Close Quick View Modal
+closeQuickView.addEventListener('click', function () {
+  quickViewModal.classList.remove('open');
+  document.body.style.overflow = ''; // Enable scrolling
+});
+
+// Open Cart Sidebar
+const cartToggle = document.getElementById('cart-toggle');
+const cartSidebar = document.getElementById('cart-sidebar');
+const closeCart = document.getElementById('close-cart');
+const continueShopping = document.getElementById('continue-shopping');
+
+cartToggle.addEventListener('click', function () {
+  cartSidebar.classList.add('open');
+  document.body.style.overflow = 'hidden'; // Disable scrolling
+});
+
+closeCart.addEventListener('click', function () {
+  cartSidebar.classList.remove('open');
+  document.body.style.overflow = ''; // Enable scrolling
+});
+
+continueShopping.addEventListener('click', function () {
+  cartSidebar.classList.remove('open');
+  document.body.style.overflow = ''; // Enable scrolling
+});
+
+// Add to Cart from Product Card
+document.querySelectorAll('.add-to-cart-btn').forEach((btn) => {
+  btn.addEventListener('click', function () {
+    const productId = parseInt(this.getAttribute('data-id'));
+    const product = cart.find((item) => item.id === productId) || {
+      id: productId,
+      name: this.closest('.product-card').querySelector('h3').textContent,
+      price: parseFloat(this.closest('.product-card').querySelector('span').textContent.replace('$', '')),
+      image: this.closest('.product-card').querySelector('img').src,
+      quantity: 0,
+    };
+    addToCart(product);
+  });
+});
+
+// Scroll to Home Section
+document.querySelector('a[href="#"]').addEventListener('click', function (e) {
+  e.preventDefault();
+  document.querySelector('body').scrollIntoView({ behavior: 'smooth' });
+});
+
+// Initialize cart on page load
+document.addEventListener('DOMContentLoaded', function () {
+  renderCartItems();
+});
+
+// Update the Quick View modal functionality
+let selectedSize = "Queen"; // Default size
+
+// Add event listeners to size buttons
+document.querySelectorAll('.size-btn').forEach((btn) => {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.size-btn').forEach((b) => b.classList.remove('border-primary', 'text-primary'));
+    this.classList.add('border-primary', 'text-primary');
+    selectedSize = this.textContent.trim();
+  });
+});
+
+// Update the Quick View modal quantity buttons
+document.querySelectorAll('.quantity-btn').forEach((btn) => {
+  btn.addEventListener('click', function () {
+    const input = this.parentElement.querySelector('input');
+    let quantity = parseInt(input.value);
+    quantity += this.textContent === '+' ? 1 : -1;
+    if (quantity < 1) quantity = 1;
+    input.value = quantity;
+  });
+});
+
+// Update the "Add to Cart" button in the Quick View modal
+document.querySelector('.quick-view-modal .flex-grow').addEventListener('click', function () {
+  const productId = parseInt(document.querySelector('.quick-view-btn').getAttribute('data-product'));
+  const product = {
+    id: productId,
+    name: document.getElementById('quick-view-title').textContent,
+    price: parseFloat(document.getElementById('quick-view-price').textContent.replace('$', '')),
+    image: document.getElementById('quick-view-image').src,
+    size: selectedSize,
+    quantity: parseInt(document.querySelector('.quantity-btn + input').value),
+  };
+  addToCart(product);
+});
+</script>
+</body>
+</html>
