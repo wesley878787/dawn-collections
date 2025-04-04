@@ -66,14 +66,53 @@ transform: translateX(0);
 max-height: 24rem; /* Limit the height of the cart items */
 overflow-y: auto; /* Enable vertical scrolling */
 }
+/* Quick View Modal - Default Styles */
 .quick-view-modal {
-opacity: 0;
-visibility: hidden;
-transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
 .quick-view-modal.open {
-opacity: 1;
-visibility: visible;
+  opacity: 1;
+  visibility: visible;
+}
+
+.quick-view-modal .modal-content {
+  background: white;
+  width: 100%;
+  max-width: 800px; /* Default max width for larger screens */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Quick View Modal - Mobile Styles */
+@media (max-width: 768px) {
+  .quick-view-modal .modal-content {
+    max-width: 90%; /* Reduce width on smaller screens */
+    margin: 0 16px; /* Add some margin for spacing */
+  }
+
+  .quick-view-modal .modal-content img {
+    max-height: 200px; /* Limit image height on mobile */
+    object-fit: cover;
+  }
+
+  .quick-view-modal .modal-content .grid {
+    display: block; /* Stack content vertically */
+  }
+
+  .quick-view-modal .modal-content .grid > div {
+    margin-bottom: 16px; /* Add spacing between stacked elements */
+  }
 }
 .custom-checkbox {
 position: relative;
@@ -700,15 +739,6 @@ opacity: 1;
 </div>
 <p id="quick-view-price" class="text-2xl font-bold text-gray-900 mb-4">$49.99</p>
 <p id="quick-view-description" class="text-gray-600 mb-6">Our premium waterproof mattress protector offers complete protection against spills, stains, and allergens while remaining breathable and comfortable. Made with high-quality materials, it's designed to extend the life of your mattress without compromising on comfort.</p>
-<div class="mb-6">
-<h3 class="font-medium mb-2">Size</h3>
-<div class="flex flex-wrap gap-2">
-<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">Single</button>
-<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">Double</button>
-<button class="size-btn px-4 py-2 border border-primary !rounded-button text-sm text-primary transition-colors whitespace-nowrap">Queen</button>
-<button class="size-btn px-4 py-2 border border-gray-200 !rounded-button text-sm hover:border-primary hover:text-primary transition-colors whitespace-nowrap">King</button>
-</div>
-</div>
 <div class="flex items-center space-x-4 mb-6">
 <div class="flex items-center border border-gray-200 rounded">
 <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900">-</button>
@@ -716,16 +746,6 @@ opacity: 1;
 <button class="quantity-btn w-10 h-10 flex items-center justify-center text-gray-500 hover:text-gray-900">+</button>
 </div>
 <button class="flex-grow bg-primary text-white py-3 font-medium !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Add to Cart</button>
-</div>
-<div class="flex items-center space-x-6 text-gray-500">
-<button class="flex items-center hover:text-primary transition-colors">
-<i class="ri-heart-line mr-2"></i>
-<span>Add to Wishlist</span>
-</button>
-<button class="flex items-center hover:text-primary transition-colors">
-<i class="ri-share-line mr-2"></i>
-<span>Share</span>
-</button>
 </div>
 </div>
 </div>
